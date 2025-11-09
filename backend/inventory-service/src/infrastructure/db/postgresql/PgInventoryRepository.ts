@@ -1,14 +1,10 @@
 import { Pool } from "pg";
-import { IInventoryRepository } from "../../domain/repositories/IInventoryRepository";
-import {
-  createInventory,
-  Inventory,
-  toPrimitives,
-} from "../../domain/entities/Inventory";
+import { createInventory, Inventory } from "../../../domain/entities/Inventory";
 import {
   CreateInventoryDTO,
   UpdateInventoryDTO,
-} from "../../interface/dtos/InventoryDTO";
+} from "../../../interface/dtos/InventoryDTO";
+import { IInventoryRepository } from "../../../domain/repositories/IInventoryRepository";
 
 export class PgInventoryRepository implements IInventoryRepository {
   constructor(private pool: Pool) {}

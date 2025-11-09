@@ -4,10 +4,10 @@ import { ListInventoryUsecase } from "../../application/usecases/ListInventory";
 import { UpdateInventoryUsecase } from "../../application/usecases/UpdateInventory";
 import { DeleteInventoryUsecase } from "../../application/usecases/DeleteInventory";
 import { CreateInventoryDTO, UpdateInventoryDTO } from "../dtos/InventoryDTO";
-import { PgInventoryRepository } from "../../infrastructure/db/PgInventoryRepository";
 import { Pool } from "pg";
 import { FindByIdInventoryUsecase } from "../../application/usecases/FindByID";
 import { FindBySKUInventoryUsecase } from "../../application/usecases/FindBySKU";
+import { PgInventoryRepository } from "../../infrastructure/db/postgresql/PgInventoryRepository";
 
 const connectionString = process.env.DATABASE_URL;
 export const registerProductionRoutes = (app: Elysia) => {
