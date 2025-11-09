@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS order_items;
+CREATE TABLE order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,
+    inventory_id INT NOT NULL,
+    quantity INT NOT NULL,
+    unit_price NUMERIC(10,2) NOT NULL,
+    total_price NUMERIC(12,2) GENERATED ALWAYS AS (quantity * unit_price) STORED,
+    CONSTRAINT fk_order_items_order FOREIGN KEY (order_id)
+        REFERENCES orders (id) ON DELETE CASCADE,
+    CONSTRAINT fk_order_items_inventory FOREIGN KEY (inventory_id)
+        REFERENCES inventory (id) ON DELETE CASCADE
+);
