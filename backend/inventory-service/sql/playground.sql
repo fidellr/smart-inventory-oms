@@ -1,5 +1,5 @@
--- -- SELECT * FROM inventory WHERE id=14
-ALTER TABLE inventory
-ALTER COLUMN supplier_id TYPE INT;
--- -- ALTER COLUMN category_id TYPE INT
--- ALTER COLUMN reorder_threshold TYPE INT;
+-- -- -- SELECT * FROM inventory WHERE id=14
+-- ALTER TABLE inventory
+-- ALTER COLUMN supplier_id TYPE INT;
+-- -- -- ALTER COLUMN category_id TYPE INT
+-- -- ALTER COLUMN reorder_threshold TYPE INT;
