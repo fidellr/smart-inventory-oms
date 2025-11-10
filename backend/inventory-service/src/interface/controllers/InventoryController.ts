@@ -1,13 +1,17 @@
 import { Elysia } from "elysia";
+import { Pool } from "pg";
 import { CreateInventoryUsecase } from "../../application/usecases/CreateInventory";
 import { ListInventoryUsecase } from "../../application/usecases/ListInventory";
 import { UpdateInventoryUsecase } from "../../application/usecases/UpdateInventory";
 import { DeleteInventoryUsecase } from "../../application/usecases/DeleteInventory";
 import { CreateInventoryDTO, UpdateInventoryDTO } from "../dtos/InventoryDTO";
-import { Pool } from "pg";
 import { FindByIdInventoryUsecase } from "../../application/usecases/FindByID";
 import { FindBySKUInventoryUsecase } from "../../application/usecases/FindBySKU";
 import { PgInventoryRepository } from "../../infrastructure/db/postgresql/PgInventoryRepository";
+// import { ReleaseStockInventoryUsecase } from "../../application/usecases/ReleaseStock";
+// import { ReserveStockInventoryUsecase } from "../../application/usecases/ReserveStock";
+import { availableParallelism } from "node:os";
+import process from "node:process";
 
 const connectionString = process.env.DATABASE_URL;
 export const registerProductionRoutes = (app: Elysia) => {
@@ -19,6 +23,14 @@ export const registerProductionRoutes = (app: Elysia) => {
   const findBySKUInventoryUsecase = new FindBySKUInventoryUsecase(repo);
   const updateInventoryUsecase = new UpdateInventoryUsecase(repo);
   const deleteInventoryUsecase = new DeleteInventoryUsecase(repo);
+  // const releaseStockInventoryUsecase = new ReleaseStockInventoryUsecase(repo);
+  // const reserveStockInventoryUsecase = new ReserveStockInventoryUsecase(repo);
+
+  app.get("/health", async () => {
+    const numCPUs = availableParallelism();
+
+    return { message: "OK", pid: process.pid, num_cpus: numCPUs };
+  });
 
   app.post("/inventory", async ({ body }) => {
     const dto = body as CreateInventoryDTO;
@@ -52,6 +64,25 @@ export const registerProductionRoutes = (app: Elysia) => {
     await deleteInventoryUsecase.execute(id);
     return { message: `Inventory with id ${id} successfully deleted!` };
   });
+
+  // app.post("/inventory/release", async ({ body }) => {
+  //   const dto = body as { product_id: number; quantity: number };
+  //   const res = await releaseStockInventoryUsecase.execute(
+  //     dto.product_id,
+  //     dto.quantity
+  //   );
+  //   return res;
+  // });
+
+  // app.post("/inventory/reserve", async ({ body }) => {
+  //   const dto = body as { product_id: number; quantity: number };
+  //   console.log({ dto });
+  //   const res = await reserveStockInventoryUsecase.execute(
+  //     dto.product_id,
+  //     dto.quantity
+  //   );
+  //   return res;
+  // });
 
   return app;
 };

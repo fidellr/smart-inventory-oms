@@ -10,9 +10,9 @@ CREATE TABLE inventory (
     reorder_threshold INT DEFAULT 0,
     location VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
-    CONSTRAINT fk_inventory_supplier FOREIGN KEY (supplier_id)
-        REFERENCES suppliers (id) ON DELETE CASCADE,
-    CONSTRAINT fk_inventory_category FOREIGN KEY (category_id)
-        REFERENCES categories (id) ON DELETE SET NULL
+    updated_at TIMESTAMP DEFAULT NOW()
+    -- CONSTRAINT fk_inventory_supplier FOREIGN KEY (supplier_id)
+    --     REFERENCES suppliers (id) ON DELETE CASCADE,
+    -- CONSTRAINT fk_inventory_category FOREIGN KEY (category_id)
+    --     REFERENCES categories (id) ON DELETE SET NULL
 );

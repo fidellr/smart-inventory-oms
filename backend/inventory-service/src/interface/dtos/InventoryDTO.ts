@@ -28,3 +28,25 @@ export const UpdateInventorySchema = z.object({
 });
 export type UpdateInventoryDTO = z.infer<typeof UpdateInventorySchema>;
 //#endregion
+
+//#region RESERVE STOCK Inventory SCHEMA
+export const ReserveStockInventorySchema = z.object({
+  productId: z.number().int(),
+  released: z.number().int(),
+  current: z.number().int(),
+});
+export type ReserveStockInventoryDTO = z.infer<
+  typeof ReserveStockInventorySchema
+>;
+//#endregion
+
+//#region RESERVE STOCK Inventory SCHEMA
+export const ReleasedStockInventorySchema = z.object({
+  productId: z.number().int(),
+  released: z.number().int(),
+  current: z.number().int(),
+});
+export type ReleasedStockInventoryDTO = z.infer<
+  typeof ReserveStockInventorySchema
+>;
+//#endregion

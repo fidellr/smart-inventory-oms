@@ -11,7 +11,6 @@ export class PgInventoryRepository implements IInventoryRepository {
 
   async save(inv: CreateInventoryDTO): Promise<void> {
     const p = createInventory(inv);
-    console.log(Object.values(p));
     await this.pool.query(
       `INSERT INTO inventory
           (sku,
@@ -110,7 +109,34 @@ export class PgInventoryRepository implements IInventoryRepository {
     };
   }
 
+  async updateQuantity(id: number, newQty: number) {
+    await this.pool.query(
+      `UPDATE inventory SET quantity_on_hand=$1, updated_at=$2 WHERE id=$3`,
+      [newQty, new Date(), id]
+    );
+  }
+
   async delete(id: number): Promise<void> {
     await this.pool.query(`DELETE FROM inventory WHERE id=$1`, [id]);
+  }
+
+  async reserveStock(productId: number, quantity: number): Promise<{}> {
+    const product = await this.findById(productId);
+    if (!product)
+      throw new Error(`Inventory item not found with ID: ${productId}`);
+
+    const newQty = product.quantity_on_hand - quantity;
+    await this.updateQuantity(productId, newQty);
+    return { productId, reserved: quantity, current: newQty };
+  }
+
+  async releaseStock(productId: number, quantity: number): Promise<{}> {
+    const product = await this.findById(productId);
+    if (!product)
+      throw new Error(`Inventory item not found with ID: ${productId}`);
+
+    const newQty = product.quantity_on_hand + quantity;
+    await this.updateQuantity(productId, newQty);
+    return { productId, released: quantity, current: newQty };
   }
 }

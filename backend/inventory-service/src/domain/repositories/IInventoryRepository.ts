@@ -8,4 +8,6 @@ export interface IInventoryRepository {
   list(): Promise<Inventory[]>;
   update(id: number, inventory: Inventory): Promise<Inventory | null>;
   delete(id: number): Promise<void>;
+  // reserveStock(productId: number, quantity: number): Promise<{}>;
+  // releaseStock(productId: number, quantity: number): Promise<{}>;
 }

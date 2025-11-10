@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { registerProductionRoutes } from "./interface/controllers/ProductController";
+import { registerProductionRoutes } from "./interface/controllers/InventoryController";
 
 const app = new Elysia();
 registerProductionRoutes(app);

@@ -1,0 +1,12 @@
+FROM oven/bun:latest
+
+WORKDIR /app
+COPY ../../backend/inventory-service/package*.json ./
+
+RUN bun install
+
+COPY ../../backend/inventory-service/ .
+
+EXPOSE 4001
+
+CMD ["bun", "run", "start"]

@@ -1,4 +1,3 @@
-import { toPrimitives } from "../../domain/entities/Inventory";
 import { IInventoryRepository } from "../../domain/repositories/IInventoryRepository";
 import { CreateInventoryDTO } from "../../interface/dtos/InventoryDTO";
 
