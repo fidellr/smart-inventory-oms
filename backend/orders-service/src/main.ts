@@ -3,7 +3,7 @@ import { registerOrderRoutes } from "./interface/controllers/OrderController";
 
 const app = new Elysia();
 registerOrderRoutes(app);
-app.listen(3001);
+app.listen(4002);
 
 console.log(
   `Order Service is running at ${app.server?.hostname}:${app.server?.port}`

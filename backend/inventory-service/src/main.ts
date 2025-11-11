@@ -4,7 +4,7 @@ import { registerProductionRoutes } from "./interface/controllers/InventoryContr
 const app = new Elysia();
 registerProductionRoutes(app);
 
-app.listen(3000);
+app.listen(4001);
 
 console.log(
   `Inventory Service is running at ${app.server?.hostname}:${app.server?.port}`
