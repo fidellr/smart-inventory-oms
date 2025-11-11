@@ -1,4 +1,4 @@
-# version: "3.9"
+version: "3.9"
 
 services:
   # === PostgreSQL Database ===
@@ -14,40 +14,70 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - backend
 
   # === Inventory Service ===
-  inventory-service:
+  inventory-service1:
     build:
       context: ../
       dockerfile: infra/docker/Dockerfile.inventory-service
-    container_name: inventory_service
+    container_name: inventory_service_1
     restart: always
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smart_inventory
+      DATABASE_URL: postgres://admin:secret@postgres:5432/main_db
       SERVICE_PORT: 4001
     depends_on:
       - postgres
-    ports:
-      - "4001:3000"
+    networks:
+      - backend
+
+  inventory-service2:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.inventory-service
+    container_name: inventory_service_2
+    restart: always
+    environment:
+      DATABASE_URL: postgres://admin:secret@postgres:5432/main_db
+      SERVICE_PORT: 4001
+    depends_on:
+      - postgres
     networks:
       - backend
 
   # === Order Service ===
-  order-service:
+  order-service1:
     build:
       context: ../
       dockerfile: infra/docker/Dockerfile.order-service
-    container_name: order_service
+    container_name: order_service_1
     restart: always
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/smart_inventory
+      DATABASE_URL: postgres://admin:secret@postgres:5432/main_db
       SERVICE_PORT: 4002
-      INVENTORY_SERVICE_URL: http://inventory-service:4001
+      INVENTORY_SERVICE_URL: http://inventory_backend
     depends_on:
       - postgres
-      - inventory-service
-    ports:
-      - "4002:3001"
+      - inventory-service1
+      - inventory-service2
+    networks:
+      - backend
+
+  order-service2:
+    build:
+      context: ../
+      dockerfile: infra/docker/Dockerfile.order-service
+    container_name: order_service_2
+    restart: always
+    environment:
+      DATABASE_URL: postgres://admin:secret@postgres:5432/main_db
+      SERVICE_PORT: 4002
+      INVENTORY_SERVICE_URL: http://inventory_backend
+    depends_on:
+      - postgres
+      - inventory-service1
+      - inventory-service2
     networks:
       - backend
 
@@ -60,13 +90,18 @@ services:
     restart: always
     ports:
       - "4000:4000"
+    environment:
+      ORDER_SERVICE_URL: http://order_backend
+      INVENTORY_SERVICE_URL: http://inventory_backend
     depends_on:
-      - order-service
-      - inventory-service
+      - order-service1
+      - order-service2
+      - inventory-service1
+      - inventory-service2
     networks:
       - backend
 
-  # === Nginx Load Balancer / Reverse Proxy ===
+  # === Nginx Load Balancer ===
   nginx:
     image: nginx:latest
     container_name: nginx_gateway
