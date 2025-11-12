@@ -2,7 +2,7 @@ import { createBreaker } from "../circuit/breaker";
 
 const inventoryBreaker = createBreaker("inventory-service");
 const INVENTORY_BASE =
-  process.env.INVENTORY_SERVICE_URL || "http://inventory-service:4001";
+  process.env.INVENTORY_SERVICE_URL || "http://localhost:4001";
 
 export async function getInventory() {
   return inventoryBreaker.fire(`${INVENTORY_BASE}/inventory`);

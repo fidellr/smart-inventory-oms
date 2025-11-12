@@ -1,7 +1,7 @@
 import { createBreaker } from "../circuit/breaker";
 
 const orderBreaker = createBreaker("order-service");
-const ORDER_BASE = process.env.ORDER_SERVICE_URL || "http://order-service:4002";
+const ORDER_BASE = process.env.ORDER_SERVICE_URL || "http://localhost:4002";
 
 export async function getOrders() {
   return orderBreaker.fire(`${ORDER_BASE}/orders`);

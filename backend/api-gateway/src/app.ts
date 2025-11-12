@@ -7,4 +7,4 @@ inventoryRoutes(app);
 ordersRoutes(app);
 
 app.listen(4000);
-console.log("🚀 API Gateway running on port 8080");
+console.log(`🚀 API Gateway running on port ${app.server?.port}`);
